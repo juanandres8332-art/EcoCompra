@@ -1,102 +1,630 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>EcoCompra - La Chorrera</title>
+
+  <!-- Estilos -->
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f6f9f8;
-      color: #2f3e46;
-      margin: 0;
-      padding: 0;
-      text-align: center;
+    :root{
+      --blue:#0a4fa0;
+      --red:#d42b3a;
+      --green:#007a5c;
+      --bg:#f6f9f8;
+      --card:#ffffff;
+      --muted:#6b7280;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #fff 0%, var(--bg) 100%);
+      color:#112;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding-bottom:60px;
     }
 
-    header {
-      background-color: #007a5c;
-      color: white;
-      padding: 25px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    /* Cabecera */
+    header{
+      background: linear-gradient(90deg, var(--red) 0%, white 49%, var(--blue) 51%, var(--green) 100%);
+      color:#fff;
+      padding:18px 20px;
+      position:sticky;
+      top:0;
+      z-index:30;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .brand h1{
+      margin:0;
+      font-size:1.45rem;
+      letter-spacing:0.4px;
+      color:#fff;
+    }
+    .brand .sub{
+      font-size:0.85rem;
+      color:rgba(255,255,255,0.95);
+      margin-top:2px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 2em;
+    /* Top-right nav buttons */
+    .topnav{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .btn{
+      background:rgba(255,255,255,0.95);
+      color:#0b3b2e;
+      border-radius:8px;
+      padding:8px 12px;
+      font-weight:600;
+      font-size:0.9rem;
+      border:0;
+      cursor:pointer;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
+      text-decoration:none;
+    }
+    .btn:hover{transform:translateY(-2px); transition:all .12s ease}
+    .btn.primary{
+      background:#fff;
+      color:var(--green);
     }
 
-    table {
-      margin: 40px auto;
-      border-collapse: collapse;
-      width: 85%;
-      background-color: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Contenedor principal */
+    .hero{
+      max-width:1100px;
+      margin:26px auto;
+      padding:18px;
+      text-align:center;
+    }
+    .subtitle{
+      color:var(--muted);
+      margin-top:6px;
+      font-size:1rem;
     }
 
-    th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
+    /* Central Informate button */
+    .cta-wrap{
+      margin:20px 0 30px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .cta{
+      background: linear-gradient(90deg,var(--green),#009879);
+      color:white;
+      border:0;
+      padding:14px 22px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:1.05rem;
+      cursor:pointer;
+      box-shadow:0 8px 24px rgba(0,122,89,0.18);
+      text-decoration:none;
     }
 
-    th {
-      background-color: #009879;
-      color: white;
+    /* Página dividida en secciones */
+    .grid{
+      max-width:1100px;
+      margin:0 auto 60px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:18px;
+      padding:0 16px;
     }
 
-    tr:nth-child(even) {
-      background-color: #f3f3f3;
+    section.card{
+      background:var(--card);
+      border-radius:12px;
+      padding:18px;
+      box-shadow:0 8px 24px rgba(17,24,39,0.04);
     }
 
-    .footer {
-      margin-top: 50px;
-      padding: 20px;
-      background-color: #007a5c;
-      color: white;
-      font-size: 0.9em;
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .section-title h3{margin:0}
+    .muted{color:var(--muted); font-size:0.95rem}
+
+    /* Tabla genérica */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:12px;
+      font-size:0.95rem;
+    }
+    th, td{
+      padding:10px 8px;
+      border-bottom:1px solid #eef1f2;
+      text-align:left;
+    }
+    thead th{
+      background: linear-gradient(90deg,#007a5c,#009879);
+      color:white;
+      font-weight:700;
+      position:sticky;
+      top:0;
+    }
+    tr:nth-child(even) td{background:#fbfdfc}
+
+    /* Pequeños badges para marca/peso/precio */
+    .small{font-size:0.85rem; color:var(--muted)}
+    .price{font-weight:700; color:#0b3b2e}
+
+    /* Diseño de la gráfica */
+    .chart-wrap{max-width:900px;margin:12px auto}
+
+    /* Footer */
+    footer{
+      max-width:1100px;
+      margin:36px auto 60px;
+      padding:16px;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.93rem;
+    }
+
+    /* Responsive */
+    @media (min-width:880px){
+      header{padding:18px 30px}
+      .hero{padding:12px}
+      .grid{grid-template-columns:1fr 420px}
+    }
+
+    /* Botones top-right compact on mobile */
+    @media (max-width:680px){
+      .topnav{gap:6px}
+      .btn{padding:6px 8px; font-size:0.82rem}
+      .grid{padding:12px}
+    }
+
+    /* Decorative flags corner */
+    .flag-left{
+      position: absolute;
+      left: 10px;
+      top: 8px;
+      font-size:1.05rem;
+      opacity:0.95;
+    }
+    .flag-right{
+      position: absolute;
+      right: 12px;
+      top: 8px;
+      font-size:1.05rem;
+      opacity:0.95;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>EcoCompra 🛒</h1>
-    <p>Comparador de precios y calidad de productos en La Chorrera</p>
+    <div class="brand">
+      <div style="font-size:1.6rem">🇵🇦</div>
+      <div>
+        <h1>EcoCompra</h1>
+        <div class="sub">Panamá - La Chorrera</div>
+      </div>
+    </div>
+
+    <nav class="topnav" aria-label="Navegación principal">
+      <!-- Botones de los 3 supermercados -->
+      <a class="btn" href="#xtra">Super Xtra</a>
+      <a class="btn" href="#elrey">El Rey</a>
+      <a class="btn" href="#super99">Super 99</a>
+    </nav>
   </header>
 
   <main>
-    <h2>Tabla de precios (ejemplo)</h2>
-    <table>
-      <tr>
-        <th>Producto</th>
-        <th>Supermercado</th>
-        <th>Precio (USD)</th>
-        <th>Calidad</th>
-      </tr>
-      <tr>
-        <td>Arroz 1kg</td>
-        <td>El Machetazo</td>
-        <td>$1.25</td>
-        <td>Alta</td>
-      </tr>
-      <tr>
-        <td>Leche 1L</td>
-        <td>Rey</td>
-        <td>$1.40</td>
-        <td>Media</td>
-      </tr>
-      <tr>
-        <td>Jabón</td>
-        <td>Super 99</td>
-        <td>$0.90</td>
-        <td>Alta</td>
-      </tr>
-    </table>
+    <section class="hero">
+      <div style="position:relative;">
+        <div class="flag-left">🇵🇦</div>
+        <div class="flag-right">🇵🇦</div>
+
+        <p class="subtitle" style="max-width:900px;margin:8px auto 0;">
+          Nos encargamos de que tú, consumidor panameño, estés informado en todo momento sobre el costo de la vida —compara precios y toma decisiones que protejan el presupuesto familiar.
+        </p>
+
+        <div class="cta-wrap">
+          <a class="cta" href="#informate">Infórmate</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <!-- Columna principal -->
+      <div>
+
+        <!-- Sección 'Infórmate' (principal con tabla y gráfica) -->
+        <section id="informate" class="card">
+          <div class="section-title">
+            <h3>Precios de la canasta básica en Panamá</h3>
+            <div class="small">Orden: Arroz · Azúcar morena · Aceite vegetal · Leche en polvo · Leche UHT · Pollo · Ñame · Guineo · Papa · Cebolla</div>
+          </div>
+
+          <p class="muted" style="margin-top:8px;">
+            En la tabla se muestran marcas y presentaciones recogidas en Super Xtra, El Rey y Super 99.
+            La gráfica debajo usa una presentación representativa (5 lb para arroz cuando está disponible, 2 lb para azúcar morena, 1.5 L para aceite, 360 g para leche en polvo, 1 L para leche UHT, 1 kg para proteínas y tubérculos).
+          </p>
+
+          <!-- Tabla combinada (producto — marca — presentación — precio por supermercado) -->
+          <table aria-label="Tabla combinada de precios">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Super Xtra (Marca • Presentación)</th>
+                <th>El Rey (Marca • Presentación)</th>
+                <th>Super 99 (Marca • Presentación)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Arroz -->
+              <tr>
+                <td><strong>Arroz</strong></td>
+                <td>
+                  Arrossísimo • 5 lb — <span class="price">$3.40</span><br>
+                  Pelín • 5 lb — <span class="price">$3.65</span><br>
+                  Del Oro • 5 lb — <span class="price">$3.83</span>
+                </td>
+                <td>
+                  Arrossísimo • 5 lb — <span class="price">$3.49</span><br>
+                  Pelín • 5 lb — <span class="price">$3.70</span><br>
+                  Gio • 5 lb — <span class="price">$3.15</span>
+                </td>
+                <td>
+                  Pelín • 5 lb — <span class="price">$3.89</span><br>
+                  Premier • 5 lb — <span class="price">$3.25</span><br>
+                  (Del Oro disponible 2 lb) — <span class="price">$1.75</span>
+                </td>
+              </tr>
+
+              <!-- Azúcar morena -->
+              <tr>
+                <td><strong>Azúcar morena</strong></td>
+                <td>
+                  Like • 2 lb — <span class="price">$1.24</span><br>
+                  La Victoria • 2 lb — <span class="price">$1.25</span><br>
+                  Doradita • 1 lb — <span class="price">$0.65</span>
+                </td>
+                <td>
+                  Morena • 2 lb — <span class="price">$1.35</span><br>
+                  La Victoria • 2 lb — <span class="price">$1.40</span><br>
+                  Doradita • 2 lb — <span class="price">$1.40</span>
+                </td>
+                <td>
+                  La Victoria • 2 lb — <span class="price">$1.35</span><br>
+                  Doradita • 1 lb — <span class="price">$0.67</span><br>
+                  Molino Panamá • 2 lb — <span class="price">$1.43</span><br>
+                  La Morenita • 1 lb — <span class="price">$0.66</span>
+                </td>
+              </tr>
+
+              <!-- Aceite vegetal -->
+              <tr>
+                <td><strong>Aceite vegetal</strong></td>
+                <td>
+                  Pabo • 1.5 L — <span class="price">$3.41</span><br>
+                  Trovattore • 1.5 L — <span class="price">$2.48</span><br>
+                  Like • 1.5 L — <span class="price">$3.68</span>
+                </td>
+                <td>
+                  Pabo • 1.5 L — <span class="price">$3.45</span><br>
+                  Girol • 1.5 L — <span class="price">$3.25</span>
+                </td>
+                <td>
+                  Hidden Park • 1.5 L — <span class="price">$2.49</span><br>
+                  Vegoil • 1.5 L — <span class="price">$3.15</span><br>
+                  Hidden Park • 1 L — <span class="price">$2.25</span>
+                </td>
+              </tr>
+
+              <!-- Leche en polvo entera instantánea -->
+              <tr>
+                <td><strong>Leche en polvo (360 g)</strong></td>
+                <td>
+                  Klim • 360 g — <span class="price">$3.40</span><br>
+                  La Condensa • 360 g — <span class="price">$2.97</span>
+                </td>
+                <td>
+                  Klim • 360 g — <span class="price">$2.66</span><br>
+                  Superior • 360 g — <span class="price">$3.45</span><br>
+                  Coast • 360 g — <span class="price">$3.91</span>
+                </td>
+                <td>
+                  Cask • 360 g — <span class="price">$3.79</span><br>
+                  Superior • 360 g — <span class="price">$3.59</span><br>
+                  Kanny • 400 g — <span class="price">$3.59</span>
+                </td>
+              </tr>
+
+              <!-- Leche fresca pasteurizada UHT 1 L -->
+              <tr>
+                <td><strong>Leche UHT (1 L)</strong></td>
+                <td>
+                  Estrella Azul • 1 L — <span class="price">$1.57</span><br>
+                  La Chiricana • 1 L — <span class="price">$1.77</span><br>
+                  Bonlac • 1 L — <span class="price">$1.60</span>
+                </td>
+                <td>
+                  Estrella Azul • 1 L — <span class="price">$1.73</span><br>
+                  La Chiricana • 1 L — <span class="price">$1.88</span><br>
+                  Bonlac • 1 L — <span class="price">$1.80</span>
+                </td>
+                <td>
+                  Nevada • 1 L — <span class="price">$1.69</span><br>
+                  Bonlac • 1 L — <span class="price">$1.75</span><br>
+                  Chiricana • 1 L — <span class="price">$1.85</span>
+                </td>
+              </tr>
+
+              <!-- Pollo entero sin plumas (por kg) -->
+              <tr>
+                <td><strong>Pollo entero (1 kg)</strong></td>
+                <td>
+                  Pollo Panamá • 1 kg — <span class="price">$2.10</span><br>
+                  Pollo empacado Caribeño • 1 kg — <span class="price">$2.60</span>
+                </td>
+                <td>
+                  Pollo Panamá • 1 kg — <span class="price">$5.68</span>
+                </td>
+                <td>
+                  Pollo Panamá • 1 kg — <span class="price">$2.60</span>
+                </td>
+              </tr>
+
+              <!-- Ñame diamante (1 kg) -->
+              <tr>
+                <td><strong>Ñame diamante (1 kg)</strong></td>
+                <td>Ñame diamante • 1 kg — <span class="price">$1.40</span></td>
+                <td>Ñame diamante • 1 kg — <span class="price">$1.95</span></td>
+                <td>Ñame diamante • 1 kg — <span class="price">$0.88</span></td>
+              </tr>
+
+              <!-- Guineo (1 kg) -->
+              <tr>
+                <td><strong>Guineo (1 kg)</strong></td>
+                <td>Guineo • 1 kg — <span class="price">$1.00</span></td>
+                <td>Guineo • 1 kg — <span class="price">$1.09</span></td>
+                <td>Guineo • 1 kg — <span class="price">$1.05</span></td>
+              </tr>
+
+              <!-- Papa nacional (1 kg) -->
+              <tr>
+                <td><strong>Papa nacional (1 kg)</strong></td>
+                <td>Papa nacional • 1 kg — <span class="price">$1.20</span></td>
+                <td>Papa nacional • 1 kg — <span class="price">$1.75</span></td>
+                <td>Papa nacional • 1 kg — <span class="price">$1.29</span></td>
+              </tr>
+
+              <!-- Cebolla amarilla (1 kg) -->
+              <tr>
+                <td><strong>Cebolla amarilla (1 kg)</strong></td>
+                <td>Cebolla amarilla nacional • 1 kg — <span class="price">$1.50</span></td>
+                <td>Cebolla amarilla nacional • 1 kg — <span class="price">$2.55</span></td>
+                <td>Cebolla amarilla nacional • 1 kg — <span class="price">$1.99</span></td>
+              </tr>
+
+            </tbody>
+          </table>
+
+          <!-- Gráfica resumen (promedios representativos) -->
+          <div class="chart-wrap">
+            <canvas id="preciosChart" width="900" height="380" aria-label="Gráfica comparativa"></canvas>
+          </div>
+
+        </section>
+
+        <!-- Sección: Super Xtra -->
+        <section id="xtra" class="card" style="margin-top:12px;">
+          <div class="section-title">
+            <h3>Canasta básica: Super Xtra</h3>
+            <div class="small">Precios recogidos en Super Xtra (La Chorrera)</div>
+          </div>
+
+          <p class="muted">Tabla: producto • marca • presentación • precio</p>
+          <table>
+            <thead>
+              <tr><th>Producto</th><th>Marca / Presentación</th><th>Precio (USD)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Arroz</td><td>Arrossísimo • 2 lb</td><td>$1.57</td></tr>
+              <tr><td>Arroz</td><td>Arrossísimo • 5 lb</td><td>$3.40</td></tr>
+              <tr><td>Arroz</td><td>Pelín • 2 lb</td><td>$1.48</td></tr>
+              <tr><td>Arroz</td><td>Pelín • 5 lb</td><td>$3.65</td></tr>
+              <tr><td>Arroz</td><td>Del Oro • 2 lb</td><td>$1.64</td></tr>
+              <tr><td>Arroz</td><td>Del Oro • 5 lb</td><td>$3.83</td></tr>
+
+              <tr><td>Azúcar morena</td><td>Like • 2 lb</td><td>$1.24</td></tr>
+              <tr><td>Azúcar morena</td><td>La Victoria • 2 lb</td><td>$1.25</td></tr>
+              <tr><td>Azúcar morena</td><td>Doradita • 1 lb</td><td>$0.65</td></tr>
+
+              <tr><td>Aceite vegetal</td><td>Pabo • 1.5 L</td><td>$3.41</td></tr>
+              <tr><td>Aceite vegetal</td><td>Trovattore • 1.5 L</td><td>$2.48</td></tr>
+              <tr><td>Aceite vegetal</td><td>Like • 1.5 L</td><td>$3.68</td></tr>
+
+              <tr><td>Leche en polvo</td><td>Klim • 360 g</td><td>$3.40</td></tr>
+              <tr><td>Leche en polvo</td><td>La Condensa • 360 g</td><td>$2.97</td></tr>
+
+              <tr><td>Leche UHT</td><td>Estrella Azul • 1 L</td><td>$1.57</td></tr>
+              <tr><td>Leche UHT</td><td>La Chiricana • 1 L</td><td>$1.77</td></tr>
+              <tr><td>Leche UHT</td><td>Bonlac • 1 L</td><td>$1.60</td></tr>
+
+              <tr><td>Pollo entero</td><td>Pollo Panamá • 1 kg</td><td>$2.10</td></tr>
+              <tr><td>Pollo entero</td><td>Pollo empacado Caribeño • 1 kg</td><td>$2.60</td></tr>
+
+              <tr><td>Ñame Diamante</td><td>Ñame • 1 kg</td><td>$1.40</td></tr>
+              <tr><td>Guineo</td><td>Guineo • 1 kg</td><td>$1.00</td></tr>
+              <tr><td>Papa nacional</td><td>Papa • 1 kg</td><td>$1.20</td></tr>
+              <tr><td>Cebolla amarilla</td><td>Cebolla • 1 kg</td><td>$1.50</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Sección: El Rey -->
+        <section id="elrey" class="card">
+          <div class="section-title">
+            <h3>Canasta básica: El Rey</h3>
+            <div class="small">Precios recogidos en El Rey (La Chorrera)</div>
+          </div>
+
+          <p class="muted">Tabla: producto • marca • presentación • precio</p>
+          <table>
+            <thead><tr><th>Producto</th><th>Marca / Presentación</th><th>Precio (USD)</th></tr></thead>
+            <tbody>
+              <tr><td>Arroz</td><td>Arrossísimo • 2 lb</td><td>$1.75</td></tr>
+              <tr><td>Arroz</td><td>Arrossísimo • 5 lb</td><td>$3.49</td></tr>
+              <tr><td>Arroz</td><td>Pelín • 2 lb</td><td>$1.50</td></tr>
+              <tr><td>Arroz</td><td>Pelín • 5 lb</td><td>$3.70</td></tr>
+              <tr><td>Arroz</td><td>Gio • 2 lb</td><td>$1.15</td></tr>
+              <tr><td>Arroz</td><td>Gio • 5 lb</td><td>$3.15</td></tr>
+
+              <tr><td>Azúcar morena</td><td>Morena • 2 lb</td><td>$1.35</td></tr>
+              <tr><td>Azúcar morena</td><td>La Victoria • 2 lb</td><td>$1.40</td></tr>
+              <tr><td>Azúcar morena</td><td>Doradita • 2 lb</td><td>$1.40</td></tr>
+
+              <tr><td>Aceite vegetal</td><td>Pabo • 1.5 L</td><td>$3.45</td></tr>
+              <tr><td>Aceite vegetal</td><td>Girol • 1.5 L</td><td>$3.25</td></tr>
+
+              <tr><td>Leche en polvo</td><td>Klim • 360 g</td><td>$2.66</td></tr>
+              <tr><td>Leche en polvo</td><td>Superior • 360 g</td><td>$3.45</td></tr>
+              <tr><td>Leche en polvo</td><td>Coast • 360 g</td><td>$3.91</td></tr>
+
+              <tr><td>Leche UHT</td><td>Estrella Azul • 1 L</td><td>$1.73</td></tr>
+              <tr><td>Leche UHT</td><td>La Chiricana • 1 L</td><td>$1.88</td></tr>
+              <tr><td>Leche UHT</td><td>Bonlac • 1 L</td><td>$1.80</td></tr>
+
+              <tr><td>Pollo entero</td><td>Pollo Panamá • 1 kg</td><td>$5.68</td></tr>
+
+              <tr><td>Ñame Diamante</td><td>Ñame • 1 kg</td><td>$1.95</td></tr>
+              <tr><td>Guineo</td><td>Guineo • 1 kg</td><td>$1.09</td></tr>
+              <tr><td>Papa nacional</td><td>Papa • 1 kg</td><td>$1.75</td></tr>
+              <tr><td>Cebolla amarilla</td><td>Cebolla • 1 kg</td><td>$2.55</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Sección: Super 99 -->
+        <section id="super99" class="card">
+          <div class="section-title">
+            <h3>Canasta básica: Super 99</h3>
+            <div class="small">Precios recogidos en Super 99 (La Chorrera)</div>
+          </div>
+
+          <p class="muted">Tabla: producto • marca • presentación • precio</p>
+          <table>
+            <thead><tr><th>Producto</th><th>Marca / Presentación</th><th>Precio (USD)</th></tr></thead>
+            <tbody>
+              <tr><td>Arroz</td><td>Pelín • 5 lb</td><td>$3.89</td></tr>
+              <tr><td>Arroz</td><td>Premier • 5 lb</td><td>$3.25</td></tr>
+              <tr><td>Arroz</td><td>Del Oro • 2 lb</td><td>$1.75</td></tr>
+              <tr><td>Arroz</td><td>Miró • 2 lb</td><td>$1.42</td></tr>
+
+              <tr><td>Azúcar morena</td><td>La Victoria • 2 lb</td><td>$1.35</td></tr>
+              <tr><td>Azúcar morena</td><td>Doradita • 1 lb</td><td>$0.67</td></tr>
+              <tr><td>Azúcar morena</td><td>Molino Panamá • 2 lb</td><td>$1.43</td></tr>
+              <tr><td>Azúcar morena</td><td>La Morenita • 1 lb</td><td>$0.66</td></tr>
+              <tr><td>Azúcar morena</td><td>La Morenita • 2 lb</td><td>$1.30</td></tr>
+
+              <tr><td>Aceite vegetal</td><td>Hidden Park • 1 L</td><td>$2.25</td></tr>
+              <tr><td>Aceite vegetal</td><td>Hidden Park • 1.5 L</td><td>$2.49</td></tr>
+              <tr><td>Aceite vegetal</td><td>Vegoil • 1.5 L</td><td>$3.15</td></tr>
+
+              <tr><td>Leche en polvo</td><td>Cask • 360 g</td><td>$3.79</td></tr>
+              <tr><td>Leche en polvo</td><td>Superior • 360 g</td><td>$3.59</td></tr>
+              <tr><td>Leche en polvo</td><td>Kanny • 400 g</td><td>$3.59</td></tr>
+
+              <tr><td>Leche UHT</td><td>Nevada • 1 L</td><td>$1.69</td></tr>
+              <tr><td>Leche UHT</td><td>Bonlac • 1 L</td><td>$1.75</td></tr>
+              <tr><td>Leche UHT</td><td>Chiricana • 1 L</td><td>$1.85</td></tr>
+
+              <tr><td>Pollo entero</td><td>Pollo Panamá • 1 kg</td><td>$2.60</td></tr>
+
+              <tr><td>Ñame Diamante</td><td>Ñame • 1 kg</td><td>$0.88</td></tr>
+              <tr><td>Guineo</td><td>Guineo • 1 kg</td><td>$1.05</td></tr>
+              <tr><td>Papa nacional</td><td>Papa • 1 kg</td><td>$1.29</td></tr>
+              <tr><td>Cebolla amarilla</td><td>Cebolla • 1 kg</td><td>$1.99</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+      </div>
+
+      <!-- Columna lateral: Resumen rápido / leyenda -->
+      <aside class="card">
+        <div class="section-title"><h3>Leyenda y notas</h3></div>
+        <p class="small muted">• Datos recopilados en tiendas: Super Xtra, El Rey y Super 99 (La Chorrera).<br>
+        • Precios en USD. Presentaciones indicadas en cada fila.<br>
+        • La gráfica usa una presentación representativa por producto (5 lb para arroz si existe; 2 lb para azúcar; 1.5 L para aceite; 360 g para leche en polvo; 1 L para leche UHT; 1 kg para tubérculos y proteína).<br>
+        • Actualiza la tabla en GitHub cuando recolectes nuevos precios (editar index.html).</p>
+
+        <hr style="margin:12px 0;border:none;border-top:1px solid #eef1f2">
+
+        <div style="text-align:center">
+          <strong style="display:block;margin-bottom:8px">Contacto del proyecto</strong>
+          <div class="small">Equipo EcoCompra — Proyecto estudiantil (10° nivel) — La Chorrera</div>
+        </div>
+      </aside>
+
+    </div> <!-- /grid -->
+
+    <footer>
+      EcoCompra • Comparador de precios — Datos recolectados localmente · © 2025 · 🇵🇦
+    </footer>
   </main>
 
-  <div class="footer">
-    <p>Proyecto científico: EcoCompra - La Chorrera © 2025</p>
-  </div>
-</body>
-</html>
+  <!-- Librería Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Datos y configuración de la gráfica -->
+  <script>
+    // Productos (orden solicitado)
+    const productos = [
+      'Arroz','Azúcar morena','Aceite vegetal','Leche en polvo',
+      'Leche UHT','Pollo entero','Ñame diamante','Guineo','Papa nacional','Cebolla amarilla'
+    ];
+
+    // Precios representativos por supermercado (numérico) — usar null si no hay dato
+    // NOTA: estos valores fueron calculados a partir de las presentaciones que proporcionaste.
+    const preciosXtra = [
+      3.6266667, // Arroz (promedio 5 lb: 3.40, 3.65, 3.83)
+      1.245,     // Azúcar (promedio 2 lb: 1.24,1.25)
+      3.19,      // Aceite (promedio 1.5L: 3.41,2.48,3.68)
+      3.185,     // Leche polvo (360g: 3.40,2.97)
+      1.6466667, // Leche UHT (1 L: 1.57,1.77,1.60)
+      2.35,      // Pollo (promedio 2.10,2.60)
+      1.40,      // Ñame
+      1.00,      // Guineo
+      1.20,      // Papa
+      1.50       // Cebolla
+    ];
+
+    const preciosElRey = [
+      3.4466667, // Arroz (3.49,3.70,3.15 avg)
+      1.3833333, // Azúcar (1.35,1.40,1.40)
+      3.35,      // Aceite (3.45,3.25)
+      3.34,      // Leche polvo (2.66,3.45,3.91 avg)
+      1.8033333, // Leche UHT (1.73,1.88,1.80)
+      5.68,      // Pollo (dato: 5.68)
+      1.95,      // Ñame
+      1.09,      // Guineo
+      1.75,      // Papa
+      2.55       // Cebolla
+    ];
+
+    const preciosSuper99 = [
+      3.57,   // Arroz (pelín 3.89 + premier 3.25 avg)
+      1.36,   // Azúcar (1.35,1.43,1.30 avg)
+      2.82,   // Aceite (hidden park 2.49, vegoil 3.15 avg)
+      3.6566667, // Leche polvo (3.79,3.59,3.59 avg)
+      1.7633333
